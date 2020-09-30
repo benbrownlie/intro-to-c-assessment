@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
@@ -9,9 +11,10 @@ namespace HelloWorld
     {
         private float _health;
         private string _name;
-        private int _damage;
+        protected int _damage;
         private int _gold;
         private Item[] _inventory;
+        private Item _currentItem;
 
         public Player()
         {
@@ -23,6 +26,13 @@ namespace HelloWorld
             _gold = 100;
         }
 
+        public Player (float healthVal, string nameVal, int damageVal)
+        {
+            _health = healthVal;
+            _name = nameVal;
+            _damage = damageVal;
+        }
+
         public Player(float healthVal, string nameVal, int damageVal, int goldVal, int inventorySize)
         {
             //Constructor for player
@@ -31,6 +41,94 @@ namespace HelloWorld
             _damage = damageVal;
             _gold = goldVal;
             _inventory = new Item[inventorySize];
+        }
+
+        //Save and Load Functions
+
+        public virtual void Save(StreamWriter writer)
+        {
+            //Saves all stats by writing to a text file
+            writer.WriteLine(_health);
+            writer.WriteLine(_name);
+            writer.WriteLine(_damage);
+            writer.WriteLine(_gold);
+            writer.WriteLine(_inventory);
+            writer.WriteLine(_currentItem);
+        }
+
+        public virtual bool Load(StreamReader reader)
+        {
+            string name = reader.ReadLine();
+            float health = 0;
+            int damage = 0;
+            int gold = 0;
+            if (float.TryParse(reader.ReadLine(), out health) == false)
+            {
+                return false;
+            }
+            if (int.TryParse(reader.ReadLine(), out damage) == false)
+            {
+                return false;
+            }
+            if (int.TryParse(reader.ReadLine(), out gold) == false)
+            {
+                return false;
+            }
+            _name = name;
+            _health = health;
+            _damage = damage;
+            _gold = gold;
+            return true;
+        }
+
+        //Combat functions
+        public virtual float Attack(Player enemy)
+        {
+            return enemy.TakeDamage(_damage);
+        }
+
+        public virtual float TakeDamage(float damageVal)
+        {
+            _health -= damageVal;
+            if (_health <= 0)
+            {
+                _health = 0;
+            }
+            return damageVal;
+        }
+
+        public void SwitchItem(Player player)
+        {
+            Item[] inventory = player.GetInventory();
+            char input = ' ';
+            for (int i = 0; i < inventory.Length; i++)
+            {
+                Console.WriteLine((i + 1) + ". " + inventory[i].name + "\nBoost: " + inventory[1].boost);
+            }
+            Console.WriteLine("> ");
+
+            switch(input)
+            {
+                case '1':
+                    {
+                        player.EquipItem(0);
+                        Console.WriteLine("You equipped the " + inventory[0].name);
+                        break;
+                    }
+                case '2':
+                    {
+                        player.EquipItem(1);
+                        Console.WriteLine("You equipped the " + inventory[1].name);
+                        break;
+                    }
+                case '3':
+                    {
+                        player.EquipItem(2);
+                        Console.WriteLine("You equipped the " + inventory[2].name);
+                        break;
+                    }
+
+            }
         }
 
         //Getter Functions
@@ -59,9 +157,27 @@ namespace HelloWorld
             return _gold;
         }
 
+        //Inventory Functions
         public void AcquireItem(Item item, int index)
         {
             _inventory[index] = item;
+        }
+
+        public bool Contains(int itemIndex)
+        {
+            if (itemIndex > 0 && itemIndex < _inventory.Length)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void EquipItem(int itemIndex)
+        {
+            if (Contains(itemIndex))
+            {
+                _currentItem = _inventory[itemIndex];
+            }
         }
 
         public bool Buy(Item stock, int inventoryIndex)

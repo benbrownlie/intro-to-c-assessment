@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace HelloWorld
@@ -17,6 +18,7 @@ namespace HelloWorld
     {
         bool gameOver = false;
         Player _player;
+        Creature _enemy;
         Item knife;
         Item axe;
         Item rifle;
@@ -50,6 +52,46 @@ namespace HelloWorld
             shopInventory = new Item[6];
         }
 
+        public Player CreateCharacter()
+        {
+            Console.WriteLine("Please enter a name");
+            string name = Console.ReadLine();
+            Player player = new Player(100, name, 5, 100, 3);
+            return player;
+        }
+
+        //Save, Load and MainMenu functions
+        public void Save()
+        {
+            StreamWriter writer = new StreamWriter("SaveData.txt");
+            _player.Save(writer);
+            _enemy.Save(writer);
+            writer.Close();
+        }
+
+        public void Load()
+        {
+            StreamReader reader = new StreamReader("SaveData.txt");
+            _player.Load(reader);
+            _enemy.Load(reader);
+            reader.Close();
+        }
+
+        public void OpenMainMenu()
+        {
+            char input;
+            GetInput(out input, "Create Character", "Load Character", "What would you like to do?");
+            if (input == '2')
+            {
+                _player = new Player();
+                _enemy = new Creature();
+                Load();
+                return;
+            }
+            _player = CreateCharacter();
+
+        }
+        //
         public void GetInput(out char input, string option1, string option2, string query)
         {
             //Prints question or task to console
@@ -69,6 +111,26 @@ namespace HelloWorld
                 }
             }
         }
+
+        public void GetInput(out char input, string option1, string option2, string option3, string query)
+        {
+            //Prints question or task to console
+            Console.WriteLine(query);
+            //Displays your options
+            Console.WriteLine(option1);
+            Console.WriteLine(option2);
+
+            input = ' ';
+            //Loops until a valid input is recieved
+            while (input != '1' && input != '2' && input != '3')
+            {
+                input = Console.ReadKey().KeyChar;
+                if (input != '1' && input != '2' && input != '3')
+                {
+                    Console.WriteLine("Invalid input, please try again.");
+                }
+            }
+        }
         public void PrintInventory(Item[] inventory)
         {
             for (int i = 0; i < inventory.Length; i++)
@@ -81,20 +143,54 @@ namespace HelloWorld
         {
             Console.WriteLine("You come to a crossroads");
             char input;
-            GetInput(out input, "Survive", "Shop", "What will you do?");
+            GetInput(out input, "Fight", "Shop", "What will you do?");
             if (input == '1')
             {
-                Console.WriteLine("You have chosen Survive, goodluck.");
+                Console.WriteLine("You have chosen Fight, goodluck.");
+                Combat();
             }
             else
             {
                 Console.WriteLine("You have chosen Shop.");
+                OpenShopMenu();
+            }
+        }
+
+        public void Combat()
+        {
+            Console.Clear();
+            Console.WriteLine("You approach the battle arena");
+            Console.WriteLine("The enemy monster attacks");
+
+            while(_player.GetPlayerAlive() && _enemy.GetCreatureAlive())
+            {
+                Console.WriteLine("Player: ");
+                _player.PrintStats();
+                Console.WriteLine("Monster: ");
+                _enemy.PrintStats();
+                char input;
+                GetInput(out input, "Attack", "Switch Item", "Save", "What will you do Player?");
+
+                if (input == '1')
+                {
+                    float damageTaken = _player.Attack(_enemy);
+                    Console.WriteLine("You attacked the enemy for " + damageTaken + " damage.");
+                }
+                else if (input == '2')
+                {
+                    _player.SwitchItem(_player);
+                }
+                else
+                {
+                    Save();
+                }
             }
         }
 
         public void OpenShopMenu()
         {
             Console.WriteLine("Welcome survivor! What are you looking for?");
+            //Prints the shop's inventory to the console
             PrintInventory(shopInventory);
             int itemIndex = -1;
             char input = Console.ReadKey().KeyChar;
@@ -137,14 +233,15 @@ namespace HelloWorld
                         return;
                     }
             }
-
+            //Checks to see if the player has enough gold to purchase the item
             if (_player.GetGold() < shopInventory[itemIndex].cost)
             {
+                //If the gold requirement is not met, this message will display 
                 Console.WriteLine("\nSorry pal, you don't have enough for that.");
                 return;
 
             }
-
+            //If the requirement is met, the function will continue and allow you to replace and inventory slot
             Console.WriteLine("\nChoose a inventory slot to replace for this item");
             PrintInventory(_player.GetInventory());
             input = Console.ReadKey().KeyChar;
@@ -196,7 +293,7 @@ namespace HelloWorld
         public void Run()
         {
             Start();
-
+            //While the bool "gameOver" is false the game will continue to play
             while (gameOver == false)
             {
                 Update();
@@ -219,7 +316,8 @@ namespace HelloWorld
         //Repeated until the game ends
         public void Update()
         {
-            OpenShopMenu();
+            OpenMainMenu();
+            ChooseDestination();
             
         }
 
