@@ -57,6 +57,7 @@ namespace HelloWorld
             Console.WriteLine("Please enter a name");
             string name = Console.ReadLine();
             Player player = new Player(100, name, 5, 100, 3);
+            Creature enemy = new Creature(50, name, 5, 100);
             return player;
         }
 
@@ -119,6 +120,7 @@ namespace HelloWorld
             //Displays your options
             Console.WriteLine(option1);
             Console.WriteLine(option2);
+            Console.WriteLine(option3);
 
             input = ' ';
             //Loops until a valid input is recieved
@@ -147,11 +149,15 @@ namespace HelloWorld
             if (input == '1')
             {
                 Console.WriteLine("You have chosen Fight, goodluck.");
+                Console.WriteLine("press any key to continue");
+                Console.ReadKey();
                 Combat();
             }
             else
             {
                 Console.WriteLine("You have chosen Shop.");
+                Console.WriteLine("press any key to continue");
+                Console.ReadKey();
                 OpenShopMenu();
             }
         }
@@ -162,11 +168,11 @@ namespace HelloWorld
             Console.WriteLine("You approach the battle arena");
             Console.WriteLine("The enemy monster attacks");
 
-            while(_player.GetPlayerAlive() && _enemy.GetCreatureAlive())
+            while(_player.GetPlayerAlive()  && _enemy.GetCreatureAlive())
             {
-                Console.WriteLine("Player: ");
+                Console.WriteLine("\nPlayer: ");
                 _player.PrintStats();
-                Console.WriteLine("Monster: ");
+                Console.WriteLine("\nMonster: ");
                 _enemy.PrintStats();
                 char input;
                 GetInput(out input, "Attack", "Switch Item", "Save", "What will you do Player?");
@@ -180,16 +186,26 @@ namespace HelloWorld
                 {
                     _player.SwitchItem(_player);
                 }
-                else
+                else if (input == '3')
                 {
                     Save();
                 }
+                float damageDealt = _enemy.Attack(_player);
+                Console.WriteLine("\nThe monster attacked for " + damageDealt);
+            }
+            if (_player.GetPlayerAlive())
+            {
+                Console.WriteLine("Player Wins");
+            }
+            if (_enemy.GetCreatureAlive())
+            {
+                Console.WriteLine("You lose");
             }
         }
 
         public void OpenShopMenu()
         {
-            Console.WriteLine("Welcome survivor! What are you looking for?");
+            Console.WriteLine("\nWelcome! What are you looking for?");
             //Prints the shop's inventory to the console
             PrintInventory(shopInventory);
             int itemIndex = -1;
@@ -308,6 +324,7 @@ namespace HelloWorld
         {
             gameOver = false;
             _player = new Player();
+            _enemy = new Creature();
             InitializeItems();
             shopInventory = new Item[] { knife, axe, rifle, bullet, molotov, medpack };
             shop = new Shop(shopInventory);
@@ -317,8 +334,8 @@ namespace HelloWorld
         public void Update()
         {
             OpenMainMenu();
-            ChooseDestination();
-            
+            OpenShopMenu();
+            Combat();
         }
 
         //Performed once when the game ends

@@ -103,9 +103,10 @@ namespace HelloWorld
             char input = ' ';
             for (int i = 0; i < inventory.Length; i++)
             {
-                Console.WriteLine((i + 1) + ". " + inventory[i].name + "\nBoost: " + inventory[1].boost);
+                Console.WriteLine((i + 1) + ". " + inventory[i].name + "\nBoost: " + inventory[i].boost);
             }
             Console.WriteLine("> ");
+            input = Console.ReadKey().KeyChar;
 
             switch(input)
             {
@@ -113,18 +114,21 @@ namespace HelloWorld
                     {
                         player.EquipItem(0);
                         Console.WriteLine("You equipped the " + inventory[0].name);
+                        Console.WriteLine("Boost increased by " + inventory[0].boost);
                         break;
                     }
                 case '2':
                     {
                         player.EquipItem(1);
                         Console.WriteLine("You equipped the " + inventory[1].name);
+                        Console.WriteLine("Boost increased by " + inventory[1].boost);
                         break;
                     }
                 case '3':
                     {
                         player.EquipItem(2);
                         Console.WriteLine("You equipped the " + inventory[2].name);
+                        Console.WriteLine("Boost increased by " + inventory[2].boost);
                         break;
                     }
 

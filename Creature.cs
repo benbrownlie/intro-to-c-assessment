@@ -41,8 +41,8 @@ namespace HelloWorld
             float damageTaken = 0.0f;
             if (_creatureHealth >= 0)
             {
-                float totalDamage = _damage + _creatureDamageMult * 0.25f;
-                _creatureDamageMult -= _creatureDamageMult * 0.25f;
+                float totalDamage = _damage + _creatureDamageMult * 0.0f;
+                _creatureDamageMult -= _creatureDamageMult * 0.0f;
                 damageTaken = player.TakeDamage(totalDamage);
                 return damageTaken;
             }
