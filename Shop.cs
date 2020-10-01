@@ -25,7 +25,7 @@ namespace HelloWorld
         }
 
         public bool Sell(Player player, int shopIndex, int playerIndex)
-        {
+        {//If the player buys an item, add the cost of the item to the shops gold
             Item itemToBuy = _shopinventory[shopIndex];
             if(player.Buy(itemToBuy, playerIndex))
             {

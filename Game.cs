@@ -63,7 +63,7 @@ namespace HelloWorld
 
         //Save, Load and MainMenu functions
         public void Save()
-        {
+        {//Saves data by writing down player and enemy stats to a text file
             StreamWriter writer = new StreamWriter("SaveData.txt");
             _player.Save(writer);
             _enemy.Save(writer);
@@ -71,7 +71,7 @@ namespace HelloWorld
         }
 
         public void Load()
-        {
+        {//Reads the data written and loads it back up
             StreamReader reader = new StreamReader("SaveData.txt");
             _player.Load(reader);
             _enemy.Load(reader);
@@ -79,7 +79,8 @@ namespace HelloWorld
         }
 
         public void OpenMainMenu()
-        {
+        {//Runs at the beginning of the program
+         //
             char input;
             GetInput(out input, "Create Character", "Load Character", "What would you like to do?");
             if (input == '2')
@@ -89,7 +90,10 @@ namespace HelloWorld
                 Load();
                 return;
             }
-            _player = CreateCharacter();
+            else
+            {
+                _player = CreateCharacter();
+            }
 
         }
         //
@@ -135,6 +139,7 @@ namespace HelloWorld
         }
         public void PrintInventory(Item[] inventory)
         {
+            //Until the inventory length is reached, displays each item in inventory to the console
             for (int i = 0; i < inventory.Length; i++)
             {
                 Console.WriteLine((i + 1) + ". " + inventory[i].name + inventory[i].cost);
@@ -147,14 +152,15 @@ namespace HelloWorld
             char input;
             GetInput(out input, "Fight", "Shop", "What will you do?");
             if (input == '1')
-            {
+            {//If the player chooses 1, the fight function will be called
                 Console.WriteLine("You have chosen Fight, goodluck.");
                 Console.WriteLine("press any key to continue");
                 Console.ReadKey();
                 Combat();
             }
             else
-            {
+            {//If the player chooses 2, the shop function will be called
+             //Allowing the player to purchase an item before fighting
                 Console.WriteLine("You have chosen Shop.");
                 Console.WriteLine("press any key to continue");
                 Console.ReadKey();
@@ -167,7 +173,7 @@ namespace HelloWorld
             Console.Clear();
             Console.WriteLine("You approach the battle arena");
             Console.WriteLine("The enemy monster attacks");
-
+            //While the player and monster are alive, the code will execute
             while(_player.GetPlayerAlive()  && _enemy.GetCreatureAlive())
             {
                 Console.WriteLine("\nPlayer: ");
@@ -178,28 +184,31 @@ namespace HelloWorld
                 GetInput(out input, "Attack", "Switch Item", "Save", "What will you do Player?");
 
                 if (input == '1')
-                {
+                {//If option 1 is called, decrement the enemie's health by the player's damage
                     float damageTaken = _player.Attack(_enemy);
                     Console.WriteLine("You attacked the enemy for " + damageTaken + " damage.");
                 }
                 else if (input == '2')
-                {
+                {//If option 2 is called, switch to a different item in the player's inventory
                     _player.SwitchItem(_player);
                 }
-                else if (input == '3')
-                {
+                else
+                {//Saves the current state of the battle
                     Save();
                 }
+                //Enemy attacks after the player's turn
                 float damageDealt = _enemy.Attack(_player);
                 Console.WriteLine("\nThe monster attacked for " + damageDealt);
             }
             if (_player.GetPlayerAlive())
-            {
+            {//If the player is the only one alive at the end of the sequence, display this message
                 Console.WriteLine("Player Wins");
             }
-            if (_enemy.GetCreatureAlive())
-            {
+            else
+            {//If the enemy is the only one alive, display this message.
                 Console.WriteLine("You lose");
+                //Ends the game
+                gameOver = true;
             }
         }
 
@@ -302,6 +311,7 @@ namespace HelloWorld
                         return;
                     }
             }
+            //After selecting a place for the item, calls the sell function
             shop.Sell(_player, itemIndex, playerIndex);
 
         }

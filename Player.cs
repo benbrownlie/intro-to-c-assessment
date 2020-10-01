@@ -57,7 +57,7 @@ namespace HelloWorld
         }
 
         public virtual bool Load(StreamReader reader)
-        {
+        {//Checks to see if any data is written before loading it into the game
             string name = reader.ReadLine();
             float health = 0;
             int damage = 0;
@@ -88,7 +88,8 @@ namespace HelloWorld
         }
 
         public virtual float TakeDamage(float damageVal)
-        {
+        {//If the player's health is less than or equal to 0, set it to 0
+         //returns the damage taken
             _health -= damageVal;
             if (_health <= 0)
             {
@@ -98,7 +99,8 @@ namespace HelloWorld
         }
 
         public void SwitchItem(Player player)
-        {
+        {//Displays the player's inventory showing the item's name and statboost
+         
             Item[] inventory = player.GetInventory();
             char input = ' ';
             for (int i = 0; i < inventory.Length; i++)
@@ -109,7 +111,7 @@ namespace HelloWorld
             input = Console.ReadKey().KeyChar;
 
             switch(input)
-            {
+            {//Gets the player's input and equips the item
                 case '1':
                     {
                         player.EquipItem(0);
@@ -163,12 +165,13 @@ namespace HelloWorld
 
         //Inventory Functions
         public void AcquireItem(Item item, int index)
-        {
+        {//Function used for adding items to inventory
             _inventory[index] = item;
         }
 
         public bool Contains(int itemIndex)
-        {
+        {//Used for the equip items function
+         //Checks for an item
             if (itemIndex > 0 && itemIndex < _inventory.Length)
             {
                 return true;
@@ -177,7 +180,7 @@ namespace HelloWorld
         }
 
         public void EquipItem(int itemIndex)
-        {
+        {//Checks if the player has an item, if so equips it
             if (Contains(itemIndex))
             {
                 _currentItem = _inventory[itemIndex];
@@ -185,7 +188,8 @@ namespace HelloWorld
         }
 
         public bool Buy(Item stock, int inventoryIndex)
-        {
+        {//If the player's amount of gold is greater than or equal to the item's cost
+         //Decrement the player's gold and add the item to their inventory
             if(_gold >= stock.cost)
             {
                 _gold -= stock.cost;
