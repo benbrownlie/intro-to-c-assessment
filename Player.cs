@@ -27,7 +27,7 @@ namespace HelloWorld
         }
 
         public Player (float healthVal, string nameVal, int damageVal)
-        {
+        {//Constructor 1 for player
             _health = healthVal;
             _name = nameVal;
             _damage = damageVal;
@@ -35,7 +35,7 @@ namespace HelloWorld
 
         public Player(float healthVal, string nameVal, int damageVal, int goldVal, int inventorySize)
         {
-            //Constructor for player
+            //Constructor 2 for player
             _health = healthVal;
             _name = nameVal;
             _damage = damageVal;
@@ -62,6 +62,7 @@ namespace HelloWorld
             float health = 0;
             int damage = 0;
             int gold = 0;
+            Item[] inventory;
             if (float.TryParse(reader.ReadLine(), out health) == false)
             {
                 return false;
@@ -135,6 +136,12 @@ namespace HelloWorld
                     }
 
             }
+        }
+
+        public void AddGold(int lootGold)
+        {
+            Console.WriteLine("You got " + lootGold + " gold!");
+            _gold += lootGold;
         }
 
         //Getter Functions

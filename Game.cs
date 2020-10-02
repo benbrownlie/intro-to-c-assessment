@@ -57,7 +57,7 @@ namespace HelloWorld
             Console.WriteLine("Please enter a name");
             string name = Console.ReadLine();
             Player player = new Player(120, name, 10, 100, 3);
-            Creature enemy = new Creature(0, name, 5, 100);
+            Creature enemy = new Creature(0, name, 10, 100);
             return player;
         }
 
@@ -203,10 +203,12 @@ namespace HelloWorld
             if (_player.GetPlayerAlive())
             {//If the player is the only one alive at the end of the sequence, display this message
                 Console.WriteLine("Player Wins");
+                _player.AddGold(30);
             }
             else
             {//If the enemy is the only one alive, display this message.
                 Console.WriteLine("You lose");
+                _player.AddGold(-10);
                 //Ends the game
                 gameOver = true;
             }
@@ -344,7 +346,7 @@ namespace HelloWorld
         public void Update()
         {
             OpenMainMenu();
-            //OpenShopMenu();
+            OpenShopMenu();
             Combat();
         }
 
