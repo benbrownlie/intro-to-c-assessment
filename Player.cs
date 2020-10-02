@@ -48,8 +48,8 @@ namespace HelloWorld
         public virtual void Save(StreamWriter writer)
         {
             //Saves all stats by writing to a text file
-            writer.WriteLine(_health);
             writer.WriteLine(_name);
+            writer.WriteLine(_health);
             writer.WriteLine(_damage);
             writer.WriteLine(_gold);
             writer.WriteLine(_inventory);

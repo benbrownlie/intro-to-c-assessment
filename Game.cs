@@ -56,8 +56,8 @@ namespace HelloWorld
         {
             Console.WriteLine("Please enter a name");
             string name = Console.ReadLine();
-            Player player = new Player(100, name, 5, 100, 3);
-            Creature enemy = new Creature(50, name, 5, 100);
+            Player player = new Player(120, name, 10, 100, 3);
+            Creature enemy = new Creature(0, name, 5, 100);
             return player;
         }
 
@@ -344,7 +344,7 @@ namespace HelloWorld
         public void Update()
         {
             OpenMainMenu();
-            OpenShopMenu();
+            //OpenShopMenu();
             Combat();
         }
 
