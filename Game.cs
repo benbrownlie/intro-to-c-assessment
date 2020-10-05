@@ -80,7 +80,8 @@ namespace HelloWorld
 
         public void OpenMainMenu()
         {//Runs at the beginning of the program
-         //
+         //Gives you the option to start a new game by "creating a new character"
+         //Or checks to see if a save file exists by "loading a character"
             char input;
             GetInput(out input, "Create Character", "Load Character", "What would you like to do?");
             if (input == '2')

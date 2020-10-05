@@ -57,7 +57,13 @@ namespace HelloWorld
         }
 
         public virtual bool Load(StreamReader reader)
-        {//Checks to see if any data is written before loading it into the game
+        {
+            if(File.Exists("SaveData.txt") == false)
+            {
+                return false;
+            }
+            //Checks to see if any data is written before loading it into the game
+            //reader = new StreamReader("SaveData.txt");
             string name = reader.ReadLine();
             float health = 0;
             int damage = 0;
