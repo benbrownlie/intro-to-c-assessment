@@ -7,38 +7,29 @@ using System.Text;
 
 namespace HelloWorld
 {
-    class Player
-    {
-        private float _health;
+    class Player : Character
+    {      
         private string _name;
-        protected int _damage;
         private int _gold;
         private Item[] _inventory;
         private Item _currentItem;
 
-        public Player()
+        public Player() : base()
         {
             //Initializes Player variables
-            _health = 100;
             _name = "Player";
-            _damage = 10;
             _inventory = new Item[3];
             _gold = 100;
         }
 
         public Player (float healthVal, string nameVal, int damageVal)
         {//Constructor 1 for player
-            _health = healthVal;
             _name = nameVal;
-            _damage = damageVal;
         }
 
-        public Player(float healthVal, string nameVal, int damageVal, int goldVal, int inventorySize)
+        public Player(float healthVal, string nameVal, int damageVal, int goldVal, int inventorySize) : base(healthVal, nameVal, damageVal)
         {
             //Constructor 2 for player
-            _health = healthVal;
-            _name = nameVal;
-            _damage = damageVal;
             _gold = goldVal;
             _inventory = new Item[inventorySize];
         }

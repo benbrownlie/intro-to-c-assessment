@@ -71,11 +71,20 @@ namespace HelloWorld
         }
 
         public void Load()
-        {//Reads the data written and loads it back up
-            StreamReader reader = new StreamReader("SaveData.txt");
-            _player.Load(reader);
-            _enemy.Load(reader);
-            reader.Close();
+        {//Checks to see if a save file already exists
+         //If not creates a new one from scratch
+            if (File.Exists("SaveData.txt") == false)
+            {
+                Console.WriteLine("No save data exists, creating new file");
+                StreamWriter writer = new StreamWriter("SaveData.txt");
+            }
+            else
+            {//If a save file exists, loads file and closes the reader
+                StreamReader reader = new StreamReader("SaveData.txt");
+                _player.Load(reader);
+                _enemy.Load(reader);
+                reader.Close();
+            }
         }
 
         public void OpenMainMenu()
