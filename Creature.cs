@@ -36,19 +36,19 @@ namespace HelloWorld
             _creatureDamageMult = damageVal;
         }
 
-        public override float Attack(Player player)
-        {
-            float damageTaken = 0.0f;
-            if (_creatureHealth >= 0)
-            {
-                float totalDamage = _damage + _creatureDamageMult * 0.0f;
-                _creatureDamageMult -= _creatureDamageMult * 0.0f;
-                damageTaken = player.TakeDamage(totalDamage);
-                return damageTaken;
-            }
-            base.Attack(player);
-            return damageTaken;
-        }
+       // public override float Attack(Player player)
+       // {
+       //     float damageTaken = 0.0f;
+       //     if (_creatureHealth >= 0)
+       //     {
+       //         float totalDamage = _damage + _creatureDamageMult * 0.0f;
+       //         _creatureDamageMult -= _creatureDamageMult * 0.0f;
+       //         damageTaken = player.TakeDamage(totalDamage);
+      //          return damageTaken;
+       //     }
+        //    base.Attack(player);
+       //     return damageTaken;
+      //  }
 
         public override float TakeDamage(float damageVal)
         {

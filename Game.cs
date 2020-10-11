@@ -184,7 +184,7 @@ namespace HelloWorld
             Console.WriteLine("You approach the battle arena");
             Console.WriteLine("The enemy monster attacks");
             //While the player and monster are alive, the code will execute
-            while(_player.GetPlayerAlive()  && _enemy.GetCreatureAlive())
+            while(_player.GetAlive()  && _enemy.GetCreatureAlive())
             {
                 Console.WriteLine("\nPlayer: ");
                 _player.PrintStats();
@@ -210,7 +210,7 @@ namespace HelloWorld
                 float damageDealt = _enemy.Attack(_player);
                 Console.WriteLine("\nThe monster attacked for " + damageDealt);
             }
-            if (_player.GetPlayerAlive())
+            if (_player.GetAlive())
             {//If the player is the only one alive at the end of the sequence, display this message
                 Console.WriteLine("Player Wins");
                 _player.AddGold(30);

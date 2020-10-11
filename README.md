@@ -32,6 +32,6 @@ During this phase you have several options:
 ### BUGS
 ``All currently known in game bugs.``
 
-> - Loading without a previous save file will crash the game.
+> - Even if the enemy reaches 0 health, the program will not end until the player dies instead.
 >
 > - Switching your items does not change your attack boost.

@@ -40,7 +40,6 @@ namespace HelloWorld
         {
             //Saves all stats by writing to a text file
             writer.WriteLine(_name);
-            writer.WriteLine(_health);
             writer.WriteLine(_damage);
             writer.WriteLine(_gold);
             writer.WriteLine(_inventory);
@@ -59,7 +58,6 @@ namespace HelloWorld
             float health = 0;
             int damage = 0;
             int gold = 0;
-            Item[] inventory;
             if (float.TryParse(reader.ReadLine(), out health) == false)
             {
                 return false;
@@ -73,28 +71,16 @@ namespace HelloWorld
                 return false;
             }
             _name = name;
-            _health = health;
             _damage = damage;
             _gold = gold;
             return true;
         }
 
         //Combat functions
-        public virtual float Attack(Player enemy)
-        {
-            return enemy.TakeDamage(_damage);
-        }
-
-        public virtual float TakeDamage(float damageVal)
-        {//If the player's health is less than or equal to 0, set it to 0
-         //returns the damage taken
-            _health -= damageVal;
-            if (_health <= 0)
-            {
-                _health = 0;
-            }
-            return damageVal;
-        }
+        //public virtual float Attack(Player enemy)
+       // {
+       //     return enemy.TakeDamage(_damage);
+      //  }
 
         public void SwitchItem(Player player)
         {//Displays the player's inventory showing the item's name and statboost
@@ -148,19 +134,6 @@ namespace HelloWorld
             return _inventory;
         }
 
-        //Name Getter
-        public string GetName()
-        {
-            //Prints the player's name to the console
-            return _name;
-        }
-
-        //Alive status Getter
-        public bool GetPlayerAlive()
-        {
-            return _health > 0;
-        }
-
         //Gold Getter
         public int GetGold()
         {
@@ -201,14 +174,6 @@ namespace HelloWorld
                 return true;
             }
             return false;
-        }
-
-        //Prints player stats to the console
-        public void PrintStats()
-        {
-            Console.WriteLine("Name: " + _name);
-            Console.WriteLine("Health: " + _health);
-            Console.WriteLine("Damage: " + _damage);
         }
     }
 }
